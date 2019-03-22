@@ -13,9 +13,10 @@ module.exports = {
     ga: "UA-35240348-1",
     apiUrl: "/api.json",
     algolia: {
-      apiKey: 'f8a038207e461aaac0e2fd16403c2b01',
-      indexName: 'ts_ed',
+      apiKey: "f8a038207e461aaac0e2fd16403c2b01",
+      indexName: "ts_ed"
     },
+
     locales: {
       "/": {
         label: "English",
@@ -36,6 +37,24 @@ module.exports = {
           {
             text: "Configuration",
             link: "/configuration.html"
+          },
+          {
+            text: "Overview",
+            items: [
+              {link: "/docs/controllers.html", text: "Controllers"},
+              {link: "/docs/providers.html", text: "Providers"},
+              {link: "/docs/scope.html", text: "Scope"},
+              // {link: "/docs/factory.html", text: "Factory"},
+              // {link: "/docs/provider.html", text: "Provider"},
+              // {link: "/docs/services.html", text: "Services"},
+              {link: "/docs/model.html", text: "Models"},
+              {link: "/docs/converters.html", text: "Converters"},
+              {link: "/docs/middlewares.html", text: "Middlewares"},
+              {link: "/docs/filters.html", text: "Filters"},
+              {link: "/docs/interceptors.html", text: "Interceptors"},
+              {link: "/docs/server-loader.html", text: "ServerLoader"},
+              {link: "/docs/testing.html", text: "Testing"}
+            ]
           },
           {
             text: "Guide",
@@ -59,23 +78,7 @@ module.exports = {
               {link: "/tutorials/aws.html", text: "AWS project"}
             ]
           },
-          {
-            text: "Documentation",
-            items: [
-              {link: "/docs/controllers.html", text: "Controllers"},
-              {link: "/docs/services.html", text: "Services"},
-              {link: "/docs/factory.html", text: "Factory"},
-              {link: "/docs/provider.html", text: "Provider"},
-              {link: "/docs/model.html", text: "Models"},
-              {link: "/docs/converters.html", text: "Converters"},
-              {link: "/docs/middlewares.html", text: "Middlewares"},
-              {link: "/docs/scope.html", text: "Scope"},
-              {link: "/docs/filters.html", text: "Filters"},
-              {link: "/docs/interceptors.html", text: "Interceptors"},
-              {link: "/docs/server-loader.html", text: "ServerLoader"},
-              {link: "/docs/testing.html", text: "Testing"}
-            ]
-          },
+
           {
             text: "Api Reference",
             link: "/api.html"
@@ -101,13 +104,13 @@ module.exports = {
           }],
 
           "/docs/": [{
-            title: "Documentation",
+            title: "Overview",
             collapsable: false,
             children: [
               "controllers",
+              "providers",
               "services",
               "factory",
-              "provider",
               "model",
               "converters",
               "middlewares",
@@ -163,9 +166,9 @@ module.exports = {
           "/tutorials/not-found-page",
           "/tutorials/aws",
           "/docs/controllers",
+          "/docs/providers",
           "/docs/services",
           "/docs/factory",
-          "/docs/provider",
           "/docs/model",
           "/docs/converters",
           "/docs/middlewares",
@@ -188,6 +191,12 @@ module.exports = {
           documentationGeneratedWith: "Documentation generated with"
         }
       }
+    }
+  },
+  markdown: {
+    lineNumbers: true,
+    config: md => {
+      md.use(require("vuepress-theme-tsed/plugins/markdown-it-symbol"));
     }
   }
 };

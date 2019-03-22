@@ -1,11 +1,12 @@
-# Scope <Badge text="beta" type="warn"/> <Badge text="Contributors are welcome" />
+# Scope
 
 The scope of a [provider](/docs/provider.md) defines the life cycle and visibility of that bean in the contexts in which it's used.
 
-Ts.ED define two types of scope:
+Ts.ED define 3 types of @@Scope@@:
 
 - `singleton`,
-- `request`
+- `request`,
+- `instance`
 
 The scope annotation can be used on the following providers:
 
@@ -17,20 +18,7 @@ The scope annotation can be used on the following providers:
 
 Singleton scope is the default behavior of all providers. That means all providers are create on the server initialization.
 
-```typescript
-import {Controller, Scope, ProviderScope} from "@tsed/common";
-
-@Controller("/")
-@Scope(ProviderScope.SINGLETON)  // OPTIONAL, leaving this annotation a the same behavior
-export class MyController {
-    private rand = Math.random() * 100;
-
-    @Get("/random")
-    async getValue() {
-        return this.rand;
-    }
-}
-```
+<<< @/docs/docs/snippets/providers/scope-singleton.ts
 
 ::: tip Note
 In this example all request on `/random` endpoint return the same random value.
@@ -39,88 +27,29 @@ In this example all request on `/random` endpoint return the same random value.
 ## Request scope
 
 Request scope will create a new instance of provider for each request. A new container will be created
-and attached to the request. It'll contains all provider annotated by `@Scope("request")`.
+and attached to the request. It'll contains all provider annotated by `@Scope(ProviderScope.REQUEST)`.
 
-### Example
-
-This example is available for Middleware and Controller.
-
-```typescript
-import {Controller, Scope, ProviderScope} from "@tsed/common";
-
-@Controller("/")
-@Scope(ProviderScope.REQUEST)
-export class MyController {
-    private rand = Math.random() * 100;
-
-    @Get("/random")
-    async getValue() {
-        return this.rand;
-    }
-}
-```
+<<< @/docs/docs/snippets/providers/scope-singleton.ts
 
 Each request on `/random` will return a different random value.
 
 ### Chain with Service
 
-It also possible to use `@Scope("request")` on service if your service is injected on a controller
-which is annotated by `@Scope("request")` too.
+It also possible to use `@Scope(ProviderScope.REQUEST)` on service if your service is injected on a controller
+which is annotated by `@Scope(ProviderScope.REQUEST)` too.
 
 Here a working example:
-```typescript
-import {Controller, Scope, ProviderScope} from "@tsed/common";
 
-@Service()
-@Scope(ProviderScope.REQUEST)
-export class MyService {
-  public rand = Math.random() * 100;
-}
-
-@Controller("/")
-@Scope(ProviderScope.REQUEST)
-export class MyController {
-
-    contructor(private myService: MyService)
-
-    @Get("/random")
-    async getValue() {
-        return this.myService.rand;
-    }
-}
-```
-
+<<< @/docs/docs/snippets/providers/scope-chain.ts
 
 And here a unworking example:
-```typescript
-import {Controller, Scope, ProviderScope} from "@tsed/common";
 
-@Service()
-@Scope(ProviderScope.REQUEST)
-export class MyService {
-  public rand = Math.random() * 100;
-}
-
-@Controller("/")
-@Scope(ProviderScope.SINGLETON) // SINGLETON avoid all Scope("request") annotation
-export class MyController {
-
-    contructor(private myService: MyService)
-
-    @Get("/random")
-    async getValue() {
-        return this.myService.rand;
-    }
-}
-```
+<<< @/docs/docs/snippets/providers/scope-chain-fail.ts
 
 ::: warning
-The `SINGLETON` annotation avoid the `@Scope("request")` annotation put on MyService.
+The `SINGLETON` annotation avoid the `@Scope(ProviderScope.REQUEST)` annotation put on MyService.
 :::
 
-### Unsupported usecase
-
-The `@Scope("request")` annotation has no effect on:
-
-- Middlewares used on endpoint.
-- Global middlewares.
+::: warning
+The `@Scope(ProviderScope.REQUEST)` annotation has no effect on Global middlewares.
+:::
